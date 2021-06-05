@@ -37,7 +37,7 @@ class Notification(TimeStampedModel):
     type = models.CharField(max_length=4, choices=Type.choices)
     message = models.ForeignKey('Message', null=True, on_delete=models.CASCADE)
     kwargs = models.JSONField()
-    client = models.ForeignKey('Customer', null=True, blank=True, on_delete=models.CASCADE)
+    customer = models.ForeignKey('Customer', null=True, blank=True, on_delete=models.CASCADE)
     group = models.ForeignKey('Group', null=True, blank=True, on_delete=models.CASCADE)
 
 

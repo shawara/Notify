@@ -1,6 +1,8 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
+from django.utils.translation import gettext as _
 
-from ...models import Message, MESSAGE_FIELD_SCHEMA, Customer, Notification, Group, Device
+from ...models import Message, MESSAGE_FIELD_SCHEMA, Customer, Notification, Group, Device, Language
 
 
 class MessageJSONField(serializers.JSONField):
@@ -38,3 +40,16 @@ class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
         model = Notification
+
+    def validate(self, attrs):
+        if attrs.get('customer', None) is None and attrs.get('group', None) is None or \
+                attrs.get('customer', None) and attrs.get('group', None):
+            raise ValidationError(_('You must set either customer or group'))
+
+        text: str = attrs['message'].text[Language.choices[0][0]]
+        try:
+            text.format(**attrs['kwargs'])
+        except KeyError as err:
+            raise ValidationError(
+                {'kwargs': _('the passed args does not match message args {0}').format(str(err.args))})
+        return attrs
