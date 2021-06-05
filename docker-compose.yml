@@ -50,6 +50,20 @@ services:
       - db
       - redis
 
+  flower:
+    image: mher/flower
+    command: sh  -c "celery -A Notify flower --port=5555"
+    volumes:
+      - .:/opt/Code
+    env_file:
+      - notify.local.env
+    ports:
+      - 5555:5555
+    depends_on:
+      - db
+      - redis
+      - celery
+
 volumes:
   postgres_data:
   notify_media:
