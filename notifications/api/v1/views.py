@@ -1,31 +1,30 @@
-from rest_framework.generics import ListCreateAPIView
-from rest_framework.viewsets import GenericViewSet
+from rest_framework import viewsets
 
 from .serializers import MessageSerializer, CustomerSerializer, DeviceSerializer, GroupSerializer, \
     NotificationSerializer
-from ...models import Message, Notification
+from ...models import Message, Notification, Customer, Group, Device
 
 
-class MessageViewSet(GenericViewSet):
+class MessageViewSet(viewsets.ModelViewSet):
     serializer_class = MessageSerializer
     queryset = Message.objects.all()
 
 
-class NotificationViewSet(GenericViewSet):
+class NotificationViewSet(viewsets.ModelViewSet):
     serializer_class = NotificationSerializer
     queryset = Notification.objects.all()
 
 
-class CustomerViewSet(GenericViewSet):
+class CustomerViewSet(viewsets.ModelViewSet):
     serializer_class = CustomerSerializer
-    queryset = Message.objects.all()
+    queryset = Customer.objects.all()
 
 
-class GroupViewSet(GenericViewSet):
+class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
-    queryset = Message.objects.all()
+    queryset = Group.objects.all()
 
 
-class DeviceViewSet(GenericViewSet):
+class DeviceViewSet(viewsets.ModelViewSet):
     serializer_class = DeviceSerializer
-    queryset = Message.objects.all()
+    queryset = Device.objects.all()
