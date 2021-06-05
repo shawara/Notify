@@ -6,7 +6,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
-      - notify.env
+      - notify.local.env
     ports:
       - 4321:5432
 
@@ -23,7 +23,7 @@ services:
 
   web_app:
     env_file:
-      - notify.env
+      - notify.local.env
     build: .
     image: web_app
     entrypoint: /docker-entrypoint.sh
@@ -41,7 +41,7 @@ services:
 
   celery:
     env_file:
-      - notify.env
+      - notify.local.env
     build: .
     command: sh  -c "celery -A Notify worker -l info"
     volumes:
