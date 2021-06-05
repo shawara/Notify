@@ -1,0 +1,56 @@
+version: '3.3'
+
+services:
+  db:
+    image: postgres:10.1-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - notify.env
+    ports:
+      - 4321:5432
+
+  nginx:
+    image: nginx:1.17.7-alpine
+    restart: unless-stopped
+    volumes:
+      - notify_media:/media/
+      - notify_run:/run/
+      - ./statics:/static
+      - ./data/local/nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - "80:80"
+
+  web_app:
+    env_file:
+      - notify.env
+    build: .
+    image: web_app
+    entrypoint: /docker-entrypoint.sh
+    volumes:
+      - .:/opt/Code
+      - notify_media:/media/
+      - notify_run:/run/
+      - ./statics:/static
+    depends_on:
+      - db
+      - nginx
+
+  redis:
+    image: redis:alpine
+
+  celery:
+    env_file:
+      - notify.env
+    build: .
+    command: sh  -c "celery -A Notify worker -l info"
+    volumes:
+      - .:/opt/Code
+    depends_on:
+      - db
+      - redis
+
+volumes:
+  postgres_data:
+  notify_media:
+  notify_run:

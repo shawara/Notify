@@ -1,0 +1,20 @@
+# Environment variables
+*.env
+!*.local.env
+# IDE files
+.idea
+
+# Python caches
+__pycache__
+
+# Virtual environment
+venv
+.coverage
+htmlcov/
+# Files directory
+files/
+static
+statics
+
+coverage.xml
+
