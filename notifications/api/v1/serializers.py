@@ -52,4 +52,6 @@ class NotificationSerializer(serializers.ModelSerializer):
         except KeyError as err:
             raise ValidationError(
                 {'kwargs': _('the passed args does not match message args {0}').format(str(err.args))})
+        except Exception:
+            raise ValidationError({'kwargs': _('this field must be object of key value')})
         return attrs
