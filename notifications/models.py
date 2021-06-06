@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext as _
+from drf_yasg import openapi
 
 from notifications.validators import JSONSchemaValidator
 
@@ -19,9 +20,19 @@ class Language(models.TextChoices):
 
 MESSAGE_FIELD_SCHEMA = {
     "description": "Dynamic values should be described as `{name}`\nExample en:Your OTP code is {code}",
-    'type': 'object',
-    'properties': {lang[0]: {'type': 'string'} for lang in Language.choices},
+    'type': openapi.TYPE_OBJECT,
+    'properties': {lang[0]: {'type': openapi.TYPE_STRING} for lang in Language.choices},
     'required': [lang[0] for lang in Language.choices]
+}
+
+CALCULATED_VALUES = ['$customer.full_name', '$customer.email', '$customer.phone', '$group.name']
+
+KWARGS_FIELD_SCHEMA = {
+    "description": """This object format "code":"1234"  for calculated values use `$` as prefix 
+     ex: `"name" : "$customer.full_name"`
+     currently supported calculated values are `{0}`""".format("`,`".join(CALCULATED_VALUES)),
+    'type': openapi.TYPE_OBJECT,
+    'additionalProperties': {'type': openapi.TYPE_STRING}
 }
 
 
@@ -36,7 +47,7 @@ class Notification(TimeStampedModel):
 
     type = models.CharField(max_length=4, choices=Type.choices)
     message = models.ForeignKey('Message', null=True, on_delete=models.CASCADE)
-    kwargs = models.JSONField()
+    kwargs = models.JSONField(default=dict, validators=[JSONSchemaValidator(limit_value=KWARGS_FIELD_SCHEMA)])
     customer = models.ForeignKey('Customer', null=True, blank=True, on_delete=models.CASCADE)
     group = models.ForeignKey('Group', null=True, blank=True, on_delete=models.CASCADE)
 
