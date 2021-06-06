@@ -37,7 +37,14 @@ KWARGS_FIELD_SCHEMA = {
 
 
 class Message(TimeStampedModel):
-    text = models.JSONField(default=dict, validators=[JSONSchemaValidator(limit_value=MESSAGE_FIELD_SCHEMA)])
+    text = models.JSONField()
+
+    def clean(self):
+        JSONSchemaValidator(MESSAGE_FIELD_SCHEMA)(self.text)
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        return super(Message, self).save(*args, **kwargs)
 
 
 class Notification(TimeStampedModel):
@@ -47,9 +54,16 @@ class Notification(TimeStampedModel):
 
     type = models.CharField(max_length=4, choices=Type.choices)
     message = models.ForeignKey('Message', null=True, on_delete=models.CASCADE)
-    kwargs = models.JSONField(default=dict, validators=[JSONSchemaValidator(limit_value=KWARGS_FIELD_SCHEMA)])
+    kwargs = models.JSONField()
     customer = models.ForeignKey('Customer', null=True, blank=True, on_delete=models.CASCADE)
     group = models.ForeignKey('Group', null=True, blank=True, on_delete=models.CASCADE)
+
+    def clean(self):
+        JSONSchemaValidator(KWARGS_FIELD_SCHEMA)(self.kwargs)
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        return super(Notification, self).save(*args, **kwargs)
 
 
 class Customer(TimeStampedModel):
