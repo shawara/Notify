@@ -43,7 +43,15 @@ Technologies Used
 Installation
 ------------
 
+Start
+
     docker-compose up --build
+    # or
+    make start
+
+Create super user
+
+    make superuser
 
 Monitoring
 ----------
@@ -59,7 +67,7 @@ API Documentation
 1. Swagger => http://localhost/swagger/
 2. Redoc => http://localhost/redoc/
 
-
+### How to use it
 
 1. Create message template : POST /api/v1/messages/
    ![img.png](data/docs/message.png)
@@ -106,3 +114,8 @@ To run all test suite, run this command::
 
     make test
 
+To see code coverage
+    
+    make cov
+will generate beautiful html pages in `htmlcov` folder
+![img.png](data/docs/coverage.png)
