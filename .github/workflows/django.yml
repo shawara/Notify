@@ -21,5 +21,7 @@ jobs:
       run: docker-compose build
     - name: start services
       run: docker-compose up -d
+    - name: check running conainers
+      run: docker ps -a
     - name: Run Test Cases
-      run: docker-compose exec -it web_app coverage run manage.py test -v 2
+      run: docker-compose exec web_app coverage run manage.py test -v 2
