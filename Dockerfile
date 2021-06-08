@@ -1,4 +1,4 @@
-FROM shawara/django-alpine:base
+FROM shawara/django-alpine:py-3.9
 ENV PYTHONUNBUFFERED 1
 
 ENV APP_PATH /opt/Code

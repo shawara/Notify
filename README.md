@@ -1,5 +1,7 @@
 Notify
 ========
+![build](https://github.com/shawara/Notify/actions/workflows/django.yml/badge.svg)
+
 
 Notification service based on Django framework
 
