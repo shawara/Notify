@@ -23,6 +23,8 @@ jobs:
       run: docker ps -a
     - name: Run Test Cases
       run: docker-compose exec -T web_app coverage run manage.py test -v 2
+    - name: Generate coverage xml
+      run: docker-compose exec -T web_app coverage xml
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
       with:
