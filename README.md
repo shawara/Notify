@@ -1,7 +1,7 @@
 Notify
 ========
 ![build](https://github.com/shawara/Notify/actions/workflows/django.yml/badge.svg)
-
+[![codecov](https://codecov.io/gh/shawara/Notify/branch/master/graph/badge.svg?token=5J1HOLRXDH)](https://codecov.io/gh/shawara/Notify)
 
 Notification service based on Django framework
 
