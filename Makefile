@@ -1,4 +1,4 @@
-RUN = docker exec -it notify_web_app_1
+RUN = docker-compose exec web_app
 superuser:
 	$(RUN) python manage.py createsuperuser
 cov:
