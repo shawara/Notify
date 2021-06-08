@@ -24,4 +24,4 @@ jobs:
     - name: check running conainers
       run: docker ps -a
     - name: Run Test Cases
-      run: docker-compose exec web_app coverage run manage.py test -v 2
+      run: docker-compose exec -T web_app coverage run manage.py test -v 2
