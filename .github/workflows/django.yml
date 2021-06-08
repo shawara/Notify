@@ -21,5 +21,7 @@ jobs:
       run: docker-compose build
     - name: start services
       run: docker-compose up -d
+    - name: bind logs of web service
+      run: docker logs -f -t web_app
     - name: Run Test Cases
       run: docker-compose exec -it web_app coverage run manage.py test -v 2
